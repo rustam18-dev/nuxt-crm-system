@@ -1,5 +1,15 @@
-<script lang="ts">
+<script lang="ts" setup>
 
+const isLoadingStore = useIsLoadingStore()
+const authStore = useAuthStore()
+const router = useRouter()
+const logout = async () => {
+  isLoadingStore.set(true)
+  await account.deleteSession('current')
+  authStore.clear()
+  await router.push('/login')
+  isLoadingStore.set(false)
+}
 </script>
 
 <template>
@@ -8,7 +18,7 @@
       <NuxtImg src="/logo.svg" alt="" width="140px" class="mx-auto"/>
     </NuxtLink>
 
-    <button class="absolute top-2 right-3 transition-colors hover:text-primary">
+    <button class="absolute top-2 right-3 transition-colors hover:text-primary" @click="logout">
         <Icon name="line-md:logout" size="22"/>
     </button>
     <LayoutMenu/>
